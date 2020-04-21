@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { Route, Redirect, Switch } from "react-router-dom";
 import Header from "./components/header";
 import Movies from "./components/Movie/movies";
+import MovieForm from "./components/Movie/movieForm";
 
 class App extends Component {
   state = {
@@ -12,7 +14,11 @@ class App extends Component {
       <div>
         <Header title={this.state.title} />
         <div className="mt-5">
-          <Movies />
+          <Switch>
+            <Route path="/movies/new" component={MovieForm}></Route>
+            <Route path="/movies" component={Movies}></Route>
+            <Redirect from="/" exact to="/movies"></Redirect>
+          </Switch>
         </div>
       </div>
     );
