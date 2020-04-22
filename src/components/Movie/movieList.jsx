@@ -6,7 +6,7 @@ const MovieList = (props) => {
   return (
     <div className="card-deck">
       {props.movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
+        <MovieCard key={movie.id} movie={movie} onDelete={props.onDelete} />
       ))}
     </div>
   );

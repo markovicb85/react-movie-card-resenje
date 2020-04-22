@@ -4,26 +4,17 @@ import MovieList from "./movieList";
 import MovieService from "../../services/MovieService";
 
 class Movies extends Component {
-  _isMounted = false;
-
   state = {
     movies: [],
   };
 
   componentDidMount() {
-    this._isMounted = true;
     this.setState(() => ({ movies: MovieService.getMovies() }));
-    console.log("Filmovi");
   }
 
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  handleSaveMovie = (movie) => {
-    // this.setState({ movies: [...this.state.movies, movie] });
-    // console.log(this.state.movies);
-    MovieService.saveMovies(movie);
+  handleDeleteMovie = (movie) => {
+    const movies = this.state.movies.filter((m) => m.id !== movie.id);
+    this.setState({ movies });
   };
 
   render() {
@@ -31,16 +22,13 @@ class Movies extends Component {
       <div className="container-fluid" style={{ marginLeft: "-15px" }}>
         <div className="d-flex flex-row">
           <div className="col-sm-12">
-            <Link
-              className="btn btn-primary m-3"
-              to={{
-                pathname: "/movies/new",
-                onSaveMovie: this.handleSaveMovie,
-              }}
-            >
+            <Link className="btn btn-primary m-3" to="/movies/new">
               Add movie
             </Link>
-            <MovieList movies={this.state.movies} />
+            <MovieList
+              movies={this.state.movies}
+              onDelete={this.handleDeleteMovie}
+            />
           </div>
         </div>
       </div>

@@ -1,16 +1,32 @@
 import React, { Component } from "react";
+import { v4 } from "uuid";
 import Input from "./input";
+
+import MovieService from "../../services/MovieService";
 
 class MovieForm extends Component {
   state = {
     movie: {
+      id: "",
       imageUrl: "",
       title: "",
       subtitle: "",
       description: "",
+      year: "",
+      rating: 3.5,
     },
     errors: [],
+    year: {
+      min: 2000,
+      max: 2020,
+    },
   };
+
+  componentDidMount() {
+    const { movie, year } = this.state;
+    movie.id = v4();
+    movie.year = Math.random() * (year.max - year.min) + year.min;
+  }
 
   handleChange = (e) => {
     e.preventDefault();
@@ -32,7 +48,6 @@ class MovieForm extends Component {
         });
       }
     } else {
-      movie = { ...this.state.movie };
       movie[id] = value;
       const errors = this.state.errors.filter((error) => error.id !== id);
       this.setState({ movie, errors });
@@ -42,7 +57,7 @@ class MovieForm extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const movie = { ...this.state.movie };
-    this.props.location.onSaveMovie(movie);
+    MovieService.saveMovies(movie);
     this.props.history.push("/movies");
   };
 
@@ -53,28 +68,28 @@ class MovieForm extends Component {
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <Input
-              id="imageUrl"
+              inputId="imageUrl"
               label="Image URL"
               value={movie.imageUrl}
               onChange={this.handleChange}
               errors={errors}
             />
             <Input
-              id="title"
+              inputId="title"
               label="Title"
               value={movie.title}
               onChange={this.handleChange}
               errors={errors}
             />
             <Input
-              id="subtitle"
+              inputId="subtitle"
               label="Subtitle"
               value={movie.subtitle}
               onChange={this.handleChange}
               errors={errors}
             />
             <Input
-              id="description"
+              inputId="description"
               label="Description"
               value={movie.description}
               onChange={this.handleChange}

@@ -8,4 +8,8 @@ export default class MovieService {
   static saveMovies(movie) {
     return movies.push(movie);
   }
+
+  // static deleteMovies(movie) {
+  //   return movies.pop(movie.id);
+  // }
 }
